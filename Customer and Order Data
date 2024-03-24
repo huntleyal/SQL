@@ -1,0 +1,54 @@
+#In this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data. 
+
+
+#How many orders were placed in January?
+
+Select count(orderiD)
+from BIT_DB.jansales
+where length(orderid) = 6
+AND order_id <> 'Order ID';
+
+#How many of those orders were for an iPhone?
+
+Select count(product)
+from bit_db.JanSales
+where product = 'iPhone';
+
+#Select the customer account numbers for all the orders that were placed in February.
+
+Select distinct acctnum
+from bit_db.customers cust
+inner join bit_db.febsales feb
+on cust.order_id = feb.orderid
+where length(orderid) = 6
+AND feb.orderid <> 'Order ID';
+
+#Which product was the cheapest one sold in January, and what was the price?
+
+Select distinct product, price
+from bit_db.jansales
+order by price asc 
+limit 1;
+
+#What is the total revenue for each product sold in January?
+
+Select product, sum(quantity) * price as revenue
+from bit_db.jansales
+group by product;
+
+#Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+
+select product, sum(quantity), sum(quantity)*price as revenue
+from bit_db.FebSales
+where location = '548 Lincoln St, Seattle, WA 98101'
+group by product;
+
+#How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers?
+
+select count(distinct cust.acctnum) as repeat_customers, round(avg(quantity*price),2) as avg_spent
+from bit_db.febsales feb
+left join bit_db.customers cust
+on feb.orderid=cust.order_id
+where feb.quantity>2
+and length(orderid) = 6
+and orderid <> 'Order ID';
