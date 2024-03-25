@@ -58,4 +58,13 @@ and orderid <> 'Order ID';
 select product, sum(quantity)
 from bit_db.febsales
 where location like '%Los Angeles%'
-group by product
+group by product;
+
+#What was the average amount spent per account in February?
+
+Select round(sum(price*quantity)/count(cust.acctnum),2) as avg_spent
+from bit_db.febsales feb
+left join customers cust
+on order_id = orderid
+where length(orderid) = 6
+and orderid <> 'Order ID';
