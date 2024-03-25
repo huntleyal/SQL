@@ -68,3 +68,20 @@ left join customers cust
 on order_id = orderid
 where length(orderid) = 6
 and orderid <> 'Order ID';
+
+#What was the average quantity of products purchased per account in February? 
+
+select sum(quantity)/count(cust.acctnum) as avg_quantity
+from bit_db.febsales feb
+left join customers cust
+on orderid = order_id
+where length(orderid) =6
+and orderid <> 'Order ID';
+
+#Which product brought in the most revenue in January and how much revenue did it bring in total?
+
+select sum(price*quantity) as revenue, product
+from bit_db.jansales
+group by product
+order by revenue desc
+limit 1;
