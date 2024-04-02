@@ -1,0 +1,86 @@
+# For this project, I downloaded Spotify data from Kaggle.
+# Then I created a table to insert Spotify data into.
+# Finally, I performed analytics on the data using SQL. 
+
+#Creating the table: 
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+#Then I inserted the Spotify Data .csv into the table.
+
+#Next, I explored the data using the following SQL. 
+
+#What are the top 25 most popular songs and and artists and whats the songs danceability?
+
+select track_name, artist_name, popularity, danceability,
+  case when danceability <= 0.510 then " just vibes"
+  when danceability <= 0.750 then "pretty dancey"
+  when danceability >= 0.751 then "dance dance"
+  end as "how dancey"
+from bit_db.spotifydata
+order by popularity desc
+limit 25;
+
+#Who has the most popular song and whats the title?
+
+select artist_name, track_name, max(popularity) as popularity
+from spotifydata;
+
+#What 5 songs have the least energy and how popular are they?
+
+select artist_name, track_name, energy, popularity
+from spotifydata
+order by energy
+limit 5;
+
+#What are the most popular acoustic songs?
+
+select artist_name, track_name, acousticness, popularity
+from spotifydata
+where acousticness >=0.55
+order by popularity desc;
+
+#What is the longest song released and how much energy did it have?
+
+select artist_name, track_name, duration_ms, energy
+from spotifydata
+order by duration_ms desc
+limit 1;
+
+#Who has the most songs in the top 50 and how many songs do they have?
+
+select artist_name, count(track_name) as "num of songs"
+from spotifydata
+group by artist_name
+order by count(*) desc
+limit 1;
+
+-#What is the average song length?
+
+select round(avg(duration_ms/60000),2) as "avg length"
+from spotifydata;
+
+#What is the tempo of the most energetic songs?
+
+Select track_name, energy, tempo
+from spotifydata
+order by energy desc
+limit 1;
