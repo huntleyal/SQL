@@ -31,9 +31,9 @@ time_signature integer NOT NULL
 #What are the top 25 most popular songs and and artists and whats the songs danceability?
 
 select track_name, artist_name, popularity, danceability,
-  case when danceability <= 0.510 then " just vibes"
-  when danceability <= 0.750 then "pretty dancey"
-  when danceability >= 0.751 then "dance dance"
+  case when danceability <= 0.510 then "Slightly Danceable"
+  when danceability <= 0.750 then "Moderately Danceable"
+  when danceability >= 0.751 then "Highly Danceable"
   end as "how dancey"
 from bit_db.spotifydata
 order by popularity desc
