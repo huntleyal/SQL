@@ -74,7 +74,6 @@ join invoice_items inv
 on trk.trackid = inv.trackid;
 
 --# 11. Write a query that includes the purchased track name AND artist name with each invoice line ID.
---ALBUMid->artist
 
 select trk.name as track_name, art.name as artist, inv.invoicelineid
 from tracks trk
@@ -119,9 +118,3 @@ and inv.invoicedate like '2009%'
 group by emp.FirstName
 order by (round(sum(inv.total), 2))  desc
 limit 1;
-
---# 15. 
-
---# 16. 
-
---# 17. 
